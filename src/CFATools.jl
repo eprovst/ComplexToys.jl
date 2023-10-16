@@ -16,7 +16,11 @@ function modularsurface(
         limits = (-1,1,-1,1);
         mmax = 10,
         nodes = (720, 720),
+        abs = false,
+        grid = false,
         color = true,
+        all = false,
+        box = nothing,
         kwargs...
     )
 
@@ -27,9 +31,11 @@ function modularsurface(
     i = range(limits[3], limits[4], length=nodes[2])
 
     Z = @. f(r + im*i')
-    mx = maximum(abs, Z)
+    mx = maximum(Base.abs, Z)
 
-    fg = surface(r, i, abs.(Z); color=DC.domaincolorshader.(Z; color),
+    shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
+
+    fg = surface(r, i, Base.abs.(Z); color=shader.(Z),
                  axis=(type=Axis3,
                        xlabel=L"\mathrm{Re}(z)",
                        ylabel=L"\mathrm{Im}(z)",
@@ -45,15 +51,15 @@ export riemannroot
 """TODO: DOCSTRING"""
 function riemannroot(
         n = 2;
-        nodes = (480, 480),
+        nodes = (120, 120),
         kwargs...
     )
 
     length(nodes) == 1 && (nodes = (nodes, nodes))
 
     if n isa Integer
-        n = n//1
         d = n
+        n = n//1
     elseif n isa Rational
         d = n.num
     else
@@ -62,7 +68,7 @@ function riemannroot(
     end
 
     r = range(0, 1, length=nodes[1])
-    θ = range(-d*π, d*π, length=nodes[2])
+    θ = range(-d*π, d*π, length=d*nodes[2])
     Z = @. r*exp(im*θ')
     W = @. r^(1/n) * exp(im*θ'/n)
 
@@ -78,23 +84,26 @@ export riemannlog
 
 """TODO: DOCSTRING"""
 function riemannlog(;
-        nodes = (480, 480),
+        nodes = (120, 120),
         kwargs...
     )
 
     length(nodes) == 1 && (nodes = (nodes, nodes))
 
     r = range(0, 1, length=nodes[1])
-    θ = range(-2π, 2π, length=nodes[2])
+    θ = range(-6π, 6π, length=6nodes[2])
     Z = @. r*exp(im*θ')
     W = @. log(r) + im*θ'
 
-    surface(real.(Z), imag.(Z), imag.(W); color=real.(W),
+    fg = surface(real.(Z), imag.(Z), imag.(W); color=real.(W),
             axis=(type=Axis3,
                   xlabel=L"\mathrm{Re}(z)",
                   ylabel=L"\mathrm{Im}(z)",
                   zlabel=L"\mathrm{Im}(\log(z))"),
             kwargs...)
+    zlims!(fg.axis, -2π, 2π)
+
+    return fg
 end
 
 export riemannsphere
@@ -111,22 +120,18 @@ function riemannsphere(
         kwargs...
     )
 
-    r = range(0, 1, length=nodes[1])
-    θ = range(-π, π, length=nodes[2])
-    x = @. r*cos(θ')
-    y = @. r*sin(θ')
-    z = @. √(1 - r^2) + 0θ'
+    ϕ = range(1/2, -1/2, length=2nodes[1])
+    θ = range(-1, 1, length=4nodes[2])
+    x = @. cospi(ϕ)*cospi(θ')
+    y = @. cospi(ϕ)*sinpi(θ')
+    z = @. sinpi(ϕ) + 0θ'
+    ξ = @. (x - im*y) / (1 - z)
 
     shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
 
     fig = Figure()
     scn = LScene(fig[1,1]; show_axis=false)
-
-    ξ1 = @. (x + im*y) / (1 - z)
-    surface!(scn, x, y, z; color=shader.(f.(ξ1)))
-    ξ2 = @. (x + im*y) / (1 + z)
-    surface!(scn, x, y, -z; color=shader.(f.(ξ2)),
-             invert_normals=true)
+    surface!(scn, x, y, z; color=shader.(f.(ξ)))
     return fig
 end
 
