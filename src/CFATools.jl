@@ -46,37 +46,44 @@ function modularsurface(
     return fg
 end
 
-export riemannroot
+export riemannpow
 
 """TODO: DOCSTRING"""
-function riemannroot(
-        n = 2;
+function riemannpow(
+        k = 1//2;
         nodes = (120, 120),
         kwargs...
     )
 
     length(nodes) == 1 && (nodes = (nodes, nodes))
 
-    if n isa Integer
-        d = n
-        n = n//1
-    elseif n isa Rational
-        d = n.num
+    if k isa Integer
+        d = 1
+    elseif k isa Rational
+        d = k.den
     else
-        @error "n is not rational"
-        return
+        r = rationalize(float(k))
+        if r != k
+            @warn "k is not rational, making best guess for the number of branches."
+            d = min(r.den, 10)
+        else
+            k = r
+            d = r.den
+        end
     end
 
     r = range(0, 1, length=nodes[1])
     θ = range(-d*π, d*π, length=d*nodes[2])
     Z = @. r*exp(im*θ')
-    W = @. r^(1/n) * exp(im*θ'/n)
+    W = @. r^k * exp(im*k*θ')
+
+    (k isa Rational) && (k = "\\frac{$(k.num)}{$(k.den)}")
 
     surface(real.(Z), imag.(Z), real.(W); color=imag.(W),
             axis=(type=Axis3,
                   xlabel=L"\mathrm{Re}(z)",
                   ylabel=L"\mathrm{Im}(z)",
-                  zlabel=LaTeXString("\$\\mathrm{Re}\\left(z^\\frac{$(n.den)}{$(n.num)}\\right)\$")),
+                  zlabel=latexstring("\\mathrm{Re}\\left(z^{$(k)}\\right)")),
             kwargs...)
 end
 
