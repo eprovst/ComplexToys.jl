@@ -92,8 +92,10 @@ function modularsurface(
 
     shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
 
+    aspectratio = (limits[2] - limits[1]) / (limits[4] - limits[3])
     fg = surface(r, i, Base.abs.(Z); color=shader.(Z),
                  axis=(type=Axis3,
+                       aspect=(aspectratio, 1, 2/3),
                        xlabel=L"\mathrm{Re}(z)",
                        ylabel=L"\mathrm{Im}(z)",
                        zlabel=L"|f(z)|"),
