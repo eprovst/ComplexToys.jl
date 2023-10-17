@@ -111,6 +111,7 @@ export riemannpow
     riemannpow(
         k = 1//2;
         nodes = (120, 120),
+        maxrotations = 10,
         kwargs...
     )
 
@@ -123,11 +124,15 @@ The keyword argument **`nodes`** is the number of grid points to use in
 respectively the radius and a single rotation of the input. If only one
 number is provided it is used for both.
 
+The automatically selected number of rotations is limited by the keyword
+**`maxrotations`**.
+
 Remaining keyword arguments are passed to the plotting backend.
 """
 function riemannpow(
         k = 1//2;
         nodes = (120, 120),
+        maxrotations = 10,
         kwargs...
     )
 
@@ -140,12 +145,17 @@ function riemannpow(
     else
         r = rationalize(float(k))
         if r != k
-            @warn "k is not rational, making best guess for the number of branches."
-            d = min(r.den, 10)
+            @warn "k is not exactly rational, making best guess for the number of branches."
+            d = min(r.den, maxrotations)
         else
             k = r
             d = r.den
         end
+    end
+
+    if d > maxrotations
+        @warn "maxrotations exceeded."
+        d = maxrotations
     end
 
     r = range(0, 1, length=nodes[1])
