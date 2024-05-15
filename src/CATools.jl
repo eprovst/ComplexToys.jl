@@ -1,4 +1,4 @@
-module CFATools
+module CATools
 
 using Reexport, LaTeXStrings
 @reexport using DomainColoringToy

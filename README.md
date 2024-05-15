@@ -1,4 +1,4 @@
-# CFATools.jl
+# CATools.jl
 
 A collection of useful routines for teaching Complex Functions and
 Applications.
@@ -6,7 +6,7 @@ Applications.
 To install run:
 ```julia
 using Pkg
-pkg"add https://gitlab.kuleuven.be/u0158737/cfatools.git"
+pkg"add https://gitlab.kuleuven.be/u0158737/catools.git"
 ```
 
 Included plotting routines:
