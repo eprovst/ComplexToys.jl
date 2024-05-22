@@ -1,0 +1,279 @@
+\documentclass[a4paper]{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[hyphens]{url}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{graphicx, subcaption}
+\usepackage[
+	usefamily={jl,julia},
+	gobble=auto,
+	pygopt={style=xcode}]{pythontex}
+\usepackage[british]{babel}
+
+\title{\vspace*{-1em}The \texttt{CATools.jl} guide}
+\author{Evert Provoost\\\normalsize evert.provoost@kuleuven.be}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Installation}
+
+\texttt{CATools.jl} (short for complex analysis tools) is a collection of
+plotting tools to aid the study of complex analysis. It is implemented in Julia,
+a modern and---at least in the author's opinion---a rather pleasant language to
+use.  No prior knowledge is needed to go through this document and concepts will
+be introduced where needed. If Julia is not yet installed on your system, you
+can use the usual method on your operating system or download it from
+\url{https://julialang.org}. We strongly recommend you use at least version 1.9
+or later!
+
+To install the plotting routines, you enter the following commands in the Julia
+REPL (read eval print loop).  \textbf{Note:} Depending on the speed of your
+machine, this might take a while. Grab a cup of tea or coffee and take a minute
+to enjoy the weather. :-)
+
+\begin{juliaverbatim}
+	using Pkg
+	pkg"add https://gitlab.kuleuven.be/u0158737/catools.git"
+\end{juliaverbatim}
+
+\section{A first phase plot}
+
+To start producing plots, you first have to load the package you just installed
+with the \jlv|using| keyword.
+
+\begin{juliaverbatim}
+	using CATools
+\end{juliaverbatim}
+
+In the remainder of this tutorial we will discuss several plots, starting with
+the phase plot (we will explain the name \jlv|domaincolor| shortly). On such a
+plot we display the phase, or argument, where $\arg z = 0$ is painted red,
+$\arg z = \frac{\pi}{2}$ lime green, $\arg z = \pi$ cyan,
+$\arg z = \frac{3\pi}{2}$ purple, etc.
+
+\begin{juliaverbatim}
+	domaincolor(z -> z)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/phase-id.png}
+\end{figure}
+
+We note that a zero (anticlockwise) goes from red through green to blue. A pole
+on the other hand (below one of second order) gives red, blue and then green.
+
+\begin{juliaverbatim}
+	domaincolor(z -> 1/z^2)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/phase-pole.png}
+\end{figure}
+
+Note the first bit of Julia syntax you will need: an anonymous function (a
+function you can easily pass as an argument) is written as \jlv|z -> f(z)|,
+analogous to $z \mapsto f(z)$ in mathematics.
+
+It is perhaps interesting to know that this reversal of the phase relates to the
+complex conjugate. The function $z \mapsto \frac{1}{z}$ is namely the
+composition of $z \mapsto \frac{1}{\bar{z}} = \frac{1}{|z|} e^{i\arg z}$ and
+$z \mapsto \bar{z} = |z| e^{-i\arg z}$. Where, in the first step, the unit
+circle is turned inside out. It is the second step which mirrors the image along
+the real axis.
+
+This is easily seen by looking at the effect these steps have on a square, or,
+algebraically, by noting that only the final step modifies the phase.
+
+\begin{juliaverbatim}
+	domaincolor(z -> z, 2, box=(.4,.6+.2im,:white))
+	domaincolor(z -> 1/conj(z), 2, box=(.4,.6+.2im,:white))
+	domaincolor(z -> 1/z, 2, box=(.4,.6+.2im,:white))
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/box-1.png}
+		$z \mapsto z$
+	\end{subfigure}
+	\hspace{1ex}
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/box-2.png}
+		$z \mapsto \frac{1}{\bar{z}}$
+	\end{subfigure}
+	\hspace{1ex}
+	\begin{subfigure}{.3\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/box-3.png}
+		$z \mapsto \frac{1}{z}$
+	\end{subfigure}
+\end{figure}
+
+In the above code, the second argument fixes the range of the axes. For the
+specific details about the \jlv|box| keyword argument we refer to the
+documentation (to which we will refer shortly). Also note the use of \jlv|im| as
+imaginary unit in Julia.
+
+\section{Domain colouring en modular surfaces}
+
+Given that $z \mapsto \frac{1}{z}$ and $z \mapsto \bar{z}$ have identical phase,
+this in itself is not always sufficient to study a function's behaviour.  For
+this reason it is common to add contours of the magnitude (usually of its
+logarithm). The resulting figure is called a domain colouring (hence
+\jlv|domaincolor|). We add the contours using the option \jlv|abs=true|. This
+way we can distinguish the pole (left) and zero (right) in the below example.
+
+\begin{juliaverbatim}
+	domaincolor(z -> (conj(z) - .5)/(z + .5), abs=true)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/candp.png}
+\end{figure}
+
+Of course there are many variations on this idea. One could, for example, paint
+zero black and infinity white. This is for instance useful to illustrate the
+Casorati--Weierstra\ss\ theorem.
+
+\begin{juliaverbatim}
+	domaincolor(z -> exp(1/z), .2, abs=Inf)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/ess.png}
+\end{figure}
+
+Aside from what is illustrate here, many other options are available, for
+instance grids. For a list of all the available options you can consult the
+function documentation using \jlv|?|, for example:
+
+\begin{juliaverbatim}
+	? domaincolor
+\end{juliaverbatim}
+
+The 2D plots of this package are from a different Julia package called
+\texttt{DomainColoring.jl}; visit
+\url{https://eprovst.github.io/DomainColoring.jl} for many more information and
+examples.
+
+Yet another way to represent magnitude and phase at the same time is by moving
+the former to the third dimension, which results in a (painted) modular surface.
+Another essential singularity we can visualize is
+$z \mapsto \sin\left(\frac{1}{z}\right)$ near $0$.
+
+\begin{juliaverbatim}
+	modularsurface(z -> sin(1/z))
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/sin-ess.png}
+\end{figure}
+
+For this example---as with all other 3D plots---it is worthwhile to plot the
+figure yourself. This additionally allows you to rotate the plot.
+
+\section{Branch points and Riemann surfaces}
+
+When looking at the domain colouring of $z \mapsto z^2$ we see the same values
+appear twice in the complex plane.
+
+\begin{juliaverbatim}
+	domaincolor(z -> z^2, abs=true)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/dc-pow2.png}
+\end{figure}
+
+The inverse map $z \mapsto z^{\frac{1}{2}}$ will hence take two values in any
+given point. The exception is $0$, where the inverse map is unique. Such a
+point $z_0$ where a map has $n$ values (here $n=1$), but every neighbour
+has strictly more than $n$ values, we call a branch point (more precisely:
+every neighbourhood of $z_0$ has at least one point where the map takes at
+least $n+1$ values).
+
+If we want to arrive a single valued function, we will have to pick one of the
+two values everywhere. The usual approach for a continuous function is to pick
+an arbitrary curve, starting from the branch point, and to require continuity
+everywhere except when crossing this curve. This results in a set of single
+valued functions (so called branches) which can be attached at this curve to
+form continuous functions. For $z \mapsto z^\frac{1}{2}$ the usual choice as
+branch is the negative real axis, as is also done in Julia. (This is a result of
+the underlying convention to use
+${|z|}^{{\frac{1}{2}}} e^{i \frac{\mathrm{Arg}\,z}{2}}$, with
+$\mathrm{Arg}\,z \in (-\pi, \pi]$ the so called principal value of the
+	argument.)
+
+	\begin{juliaverbatim}
+		domaincolor(z -> z^(1/2), abs=true)
+	\end{juliaverbatim}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.45\textwidth]{figures/bc-sqrt.png}
+	\end{figure}
+
+	However, we could also try to make a plot of all the values at the same
+	time. Note that this is a four dimensional object. For $w = f(z)$ we namely
+	have $(\mathrm{Re}\,z, \mathrm{Im}\,z, \mathrm{Re}\,w, \mathrm{Im}\,w)$ as
+	graph. (Alternatively, one cal of course also look at the phase and
+	magnitude.)
+
+	When we project this orthogonally on the first three components and colour
+	the resulting surface according to the dropped component, we get the
+	following for $z \mapsto z^{\frac{1}{2}}$.
+
+	\begin{juliaverbatim}
+		riemannpow(1//2)
+	\end{juliaverbatim}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.45\textwidth]{figures/rm-sqrt.png}
+	\end{figure}
+
+	Here \jlv|1//2| is Julia notation for the exact rational number
+$\frac{1}{2}$. On the negative real axis this surface seems to intersect
+	itself, this is merely an artefact of the chosen projection, the colour is
+	in fact distinct. Note that indeed each point, except for the branch point
+$0$, has two distinct values.
+
+	We encourage you to play around with different rational numbers and to look what
+	does (and what does not) change the number of values. Also try an irrational
+	power; note that it never reattaches to itself, \emph{it takes an infinite
+		number of values!}
+
+	A `simpler' example of a function that takes infinitely many values is
+$\log z = \log |z| + i\arg z$.  Using a slightly different projection, we
+get the following `staircase' picture.
+
+\begin{juliaverbatim}
+	riemannlog()
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/rm-log.png}
+\end{figure}
+
+\section{Riemann sphere}
+
+Finally, \texttt{CATools.jl} is also able to plot a function on the Riemann
+sphere.  Let us again look at the sine, with a zero at the origin (south pole)
+and an essential singularity at infinity (north pole).
+
+\begin{juliaverbatim}
+	riemannsphere(sin)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/rms-sin.png}
+\end{figure}
+
+\end{document}
