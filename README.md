@@ -1,7 +1,9 @@
 # CATools.jl
 
-A collection of useful routines for teaching Complex Functions and
-Applications.
+A collection of useful plotting routines for teaching and learning complex
+analysis.  Take a look at [the
+guide](https://gitlab.kuleuven.be/u0158737/catools/-/blob/main/guide/guide.pdf)
+to get started.
 
 To install run:
 ```julia
