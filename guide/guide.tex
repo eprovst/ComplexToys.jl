@@ -28,16 +28,16 @@
 \texttt{CATools.jl} (short for complex analysis tools) is a collection of
 plotting tools to aid the study of complex analysis. It is implemented in Julia,
 a modern and---at least in the author's opinion---a rather pleasant language to
-use.  No prior knowledge is needed to go through this document and concepts will
-be introduced where needed. If Julia is not yet installed on your system, you
-can use the usual method on your operating system or download it from
-\url{https://julialang.org}. We strongly recommend you use at least version 1.9
-or later!
+use.  No prior knowledge of Julia is needed to go through this document as
+concepts will be introduced where needed. If Julia is not yet installed on your
+system, you can use the usual method of your operating system or download it
+from \url{https://julialang.org}. We strongly recommend you use at least version
+1.9 or later!
 
 To install the plotting routines, you enter the following commands in the Julia
 REPL (read eval print loop).  \textbf{Note:} Depending on the speed of your
 machine, this might take a while. Grab a cup of tea or coffee and take a minute
-to enjoy the weather. :-)
+to enjoy the outdoors. :-)
 
 \begin{juliaverbatim}
 	using Pkg
@@ -54,9 +54,9 @@ with the \jlv|using| keyword.
 \end{juliaverbatim}
 
 In the remainder of this tutorial we will discuss several plots, starting with
-the phase plot (we will explain the name \jlv|domaincolor| shortly). On such a
-plot we display the phase, or argument, where $\arg z = 0$ is painted red,
-$\arg z = \frac{\pi}{2}$ lime green, $\arg z = \pi$ cyan,
+the phase plot (we will explain the name \jlv|domaincolor| in the next
+section). On such a plot, we display the phase, or argument, by painting
+$\arg z = 0$ red, $\arg z = \frac{\pi}{2}$ lime green, $\arg z = \pi$ cyan,
 $\arg z = \frac{3\pi}{2}$ purple, etc.
 
 \begin{juliaverbatim}
@@ -67,8 +67,9 @@ $\arg z = \frac{3\pi}{2}$ purple, etc.
 	\includegraphics[width=.45\textwidth]{figures/phase-id.png}
 \end{figure}
 
-We note that a zero (anticlockwise) goes from red through green to blue. A pole
-on the other hand (below one of second order) gives red, blue and then green.
+We note that a zero, going anticlockwise, gives red, green and finally blue. A
+pole on the other hand (below one of second order) is surrounded by red, blue
+and then green.
 
 \begin{juliaverbatim}
 	domaincolor(z -> 1/z^2)
@@ -85,12 +86,11 @@ analogous to $z \mapsto f(z)$ in mathematics.
 It is perhaps interesting to know that this reversal of the phase relates to the
 complex conjugate. The function $z \mapsto \frac{1}{z}$ is namely the
 composition of $z \mapsto \frac{1}{\bar{z}} = \frac{1}{|z|} e^{i\arg z}$ and
-$z \mapsto \bar{z} = |z| e^{-i\arg z}$. Where, in the first step, the unit
-circle is turned inside out. It is the second step which mirrors the image along
-the real axis.
+$z \mapsto \bar{z} = |z| e^{-i\arg z}$. In the first step, the unit circle is
+turned inside out; the second step mirrors the image along the real axis.
 
-This is easily seen by looking at the effect these steps have on a square, or,
-algebraically, by noting that only the final step modifies the phase.
+This is easily seen by looking at the effect these steps have on a square, or
+algebraically by noting that only the final step modifies the phase.
 
 \begin{juliaverbatim}
 	domaincolor(z -> z, 2, box=(.4,.6+.2im,:white))
@@ -120,17 +120,19 @@ algebraically, by noting that only the final step modifies the phase.
 
 In the above code, the second argument fixes the range of the axes. For the
 specific details about the \jlv|box| keyword argument we refer to the
-documentation (to which we will refer shortly). Also note the use of \jlv|im| as
-imaginary unit in Julia.
+documentation (try: \jlv|? domaincolor|, more on this later). Also note the use
+of \jlv|im| as imaginary unit in Julia.
 
-\section{Domain colouring en modular surfaces}
+\section{Domain colouring and modular surfaces}
 
 Given that $z \mapsto \frac{1}{z}$ and $z \mapsto \bar{z}$ have identical phase,
-this in itself is not always sufficient to study a function's behaviour.  For
-this reason it is common to add contours of the magnitude (usually of its
-logarithm). The resulting figure is called a domain colouring (hence
-\jlv|domaincolor|). We add the contours using the option \jlv|abs=true|. This
-way we can distinguish the pole (left) and zero (right) in the below example.
+a phase plot alone is not always sufficient to study a function's behaviour.
+For this reason it is common to add contour lines of the magnitude (usually more
+specifically of its logarithm). The resulting figure is called a domain
+colouring (hence \jlv|domaincolor|). We can add the contours using the option
+\jlv|abs=true|. This way we can distinguish the pole (left, with
+\emph{increasing} lightness between contours) and zero (right, with
+\emph{decreasing} lightness between contours) in the below example.
 
 \begin{juliaverbatim}
 	domaincolor(z -> (conj(z) - .5)/(z + .5), abs=true)
@@ -142,7 +144,7 @@ way we can distinguish the pole (left) and zero (right) in the below example.
 
 Of course there are many variations on this idea. One could, for example, paint
 zero black and infinity white. This is for instance useful to illustrate the
-Casorati--Weierstra\ss\ theorem.
+Casorati--Weierstrass theorem.
 
 \begin{juliaverbatim}
 	domaincolor(z -> exp(1/z), .2, abs=Inf)
@@ -153,19 +155,20 @@ Casorati--Weierstra\ss\ theorem.
 \end{figure}
 
 Aside from what is illustrate here, many other options are available, for
-instance grids. For a list of all the available options you can consult the
-function documentation using \jlv|?|, for example:
+instance grid lines and colour vision deficiency friendly phase plots. For a
+list of all the available options you can consult a function's documentation
+using \jlv|?|, for example:
 
 \begin{juliaverbatim}
 	? domaincolor
 \end{juliaverbatim}
 
-The 2D plots of this package are from a different Julia package called
-\texttt{DomainColoring.jl}; visit
-\url{https://eprovst.github.io/DomainColoring.jl} for many more information and
+The 2D plots included in \texttt{CATools.jl} come from a different Julia package
+called \texttt{DomainColoring.jl}; visit
+\url{https://eprovst.github.io/DomainColoring.jl} for more information and
 examples.
 
-Yet another way to represent magnitude and phase at the same time is by moving
+Yet another way to represent magnitude and phase at the same time, is by moving
 the former to the third dimension, which results in a (painted) modular surface.
 Another essential singularity we can visualize is
 $z \mapsto \sin\left(\frac{1}{z}\right)$ near $0$.
@@ -195,64 +198,67 @@ appear twice in the complex plane.
 \end{figure}
 
 The inverse map $z \mapsto z^{\frac{1}{2}}$ will hence take two values in any
-given point. The exception is $0$, where the inverse map is unique. Such a
-point $z_0$ where a map has $n$ values (here $n=1$), but every neighbour
-has strictly more than $n$ values, we call a branch point (more precisely:
-every neighbourhood of $z_0$ has at least one point where the map takes at
-least $n+1$ values).
+given point. An exception is $0$, where the inverse map is unique. Such a point
+$z_0$ where a map has $n$ values (here $n=1$), but every neighbour has strictly
+more than $n$ values, is called a \emph{branch point} (more precisely: every
+neighbourhood of $z_0$ has at least one point where the map takes at least $n+1$
+values).
 
-If we want to arrive a single valued function, we will have to pick one of the
-two values everywhere. The usual approach for a continuous function is to pick
-an arbitrary curve, starting from the branch point, and to require continuity
-everywhere except when crossing this curve. This results in a set of single
-valued functions (so called branches) which can be attached at this curve to
-form continuous functions. For $z \mapsto z^\frac{1}{2}$ the usual choice as
-branch is the negative real axis, as is also done in Julia. (This is a result of
-the underlying convention to use
-${|z|}^{{\frac{1}{2}}} e^{i \frac{\mathrm{Arg}\,z}{2}}$, with
-$\mathrm{Arg}\,z \in (-\pi, \pi]$ the so called principal value of the
-	argument.)
+If we want to arrive at a single valued function, we will have to choose between
+one of the two values. The usual approach for a continuous function is to pick
+an arbitrary curve (the \emph{branch cut}) connecting two branch points, and to
+require continuity everywhere except when crossing this curve. This results in a
+set of single valued functions (so called \emph{branches}) which can be attached
+along this curve in a continuous fashion.
 
-	\begin{juliaverbatim}
-		domaincolor(z -> z^(1/2), abs=true)
-	\end{juliaverbatim}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=.45\textwidth]{figures/bc-sqrt.png}
-	\end{figure}
+For $z \mapsto z^\frac{1}{2}$, the usual choice of branch cut is the negative
+real axis (connecting the branch points $0$ and $\infty$), as is also done in
+Julia. This is a result of the convention to use
+${|z|}^{\frac{1}{n}} e^{i \frac{\mathrm{Arg}\,z}{n}}$ as the so-called
+\emph{principal value} of the $n$th root, with $\mathrm{Arg}\,z \in (-\pi, \pi]$
+the principal value of the argument. Analogously, the principal value of the
+logarithm is given by $\mathrm{Log}\,z = \log |z| + i\,\mathrm{Arg}\, z$, which
+is of course compatible with the preceding.
 
-	However, we could also try to make a plot of all the values at the same
-	time. Note that this is a four dimensional object. For $w = f(z)$ we namely
-	have $(\mathrm{Re}\,z, \mathrm{Im}\,z, \mathrm{Re}\,w, \mathrm{Im}\,w)$ as
-	graph. (Alternatively, one cal of course also look at the phase and
-	magnitude.)
+\begin{juliaverbatim}
+	domaincolor(z -> z^(1/2), abs=true)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/bc-sqrt.png}
+\end{figure}
 
-	When we project this orthogonally on the first three components and colour
-	the resulting surface according to the dropped component, we get the
-	following for $z \mapsto z^{\frac{1}{2}}$.
+Additionally, we could also try to make a plot of all the values at the same
+time. Note that this is a four dimensional object. For $w = f(z)$ we namely have
+$(\mathrm{Re}\,z, \mathrm{Im}\,z, \mathrm{Re}\,w, \mathrm{Im}\,w)$ as
+graph. (One can, of course, also use the phases and magnitudes.)
 
-	\begin{juliaverbatim}
-		riemannpow(1//2)
-	\end{juliaverbatim}
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=.45\textwidth]{figures/rm-sqrt.png}
-	\end{figure}
+When we project this orthogonally on the first three components and colour
+the resulting surface according to the removed component, we get the
+following for $z \mapsto z^{\frac{1}{2}}$.
 
-	Here \jlv|1//2| is Julia notation for the exact rational number
-$\frac{1}{2}$. On the negative real axis this surface seems to intersect
-	itself, this is merely an artefact of the chosen projection, the colour is
-	in fact distinct. Note that indeed each point, except for the branch point
-$0$, has two distinct values.
+\begin{juliaverbatim}
+	riemannpow(1//2)
+\end{juliaverbatim}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.45\textwidth]{figures/rm-sqrt.png}
+\end{figure}
 
-	We encourage you to play around with different rational numbers and to look what
-	does (and what does not) change the number of values. Also try an irrational
-	power; note that it never reattaches to itself, \emph{it takes an infinite
-		number of values!}
+Here \jlv|1//2| is Julia notation for the exact rational number
+$\frac{1}{2}$. On the negative real axis the graph seems to intersect itself,
+but this is merely an artefact of the chosen projection. The colour is in fact
+distinct. Note that indeed each point, except for the branch point $0$, has two
+distinct values.
 
-	A `simpler' example of a function that takes infinitely many values is
+We encourage you to play around with different rational numbers and to look what
+does (and what does not) change the number of values. Also try an irrational
+power; note that it never reattaches to itself, \emph{it takes an infinite
+	number of values!}
+
+A `simpler' example of a function that takes infinitely many values is
 $\log z = \log |z| + i\arg z$.  Using a slightly different projection, we
-get the following `staircase' picture.
+get a rather nice looking staircase.
 
 \begin{juliaverbatim}
 	riemannlog()
@@ -262,18 +268,18 @@ get the following `staircase' picture.
 	\includegraphics[width=.45\textwidth]{figures/rm-log.png}
 \end{figure}
 
-\section{Riemann sphere}
+\section{On the Riemann sphere}
 
 Finally, \texttt{CATools.jl} is also able to plot a function on the Riemann
-sphere.  Let us again look at the sine, with a zero at the origin (south pole)
-and an essential singularity at infinity (north pole).
+sphere.  Let us, to conclude, again look at the sine, with a zero at the origin
+(south pole) and an essential singularity at infinity (north pole).
 
 \begin{juliaverbatim}
 	riemannsphere(sin)
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{figures/rms-sin.png}
+	\includegraphics[width=0.75\textwidth]{figures/rms-sin.png}
 \end{figure}
 
 \end{document}
