@@ -36,7 +36,11 @@ to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
 
 # Keyword Arguments
 
-- **`mmax`** sets a cut off point for the magnitude.
+- **`log`** plot the magnitude using a logarithmic scale.
+
+- **`mmax`** sets an upper cut off point for the magnitude.
+
+- **`mmin`** sets a lower cut off point for the magnitude.
 
 - **`cut`** toggles the behaviour when the maximum is reached. If true
   the surface is cut, leaving a flat spot which can be shaded. Else the
@@ -77,7 +81,9 @@ Remaining keyword arguments are passed to the plotting backend.
 function modularsurface(
         f,
         limits = (-1,1,-1,1);
+        log = false,
         mmax = 10,
+        mmin = log ? -mmax : 0,
         cut = false,
         nodes = (720, 720),
         abs = false,
@@ -95,8 +101,9 @@ function modularsurface(
     i = range(limits[3], limits[4], length=nodes[2])
 
     Z = @. f(r + im*i')
-    R = min.(cut ? mmax : Inf, Base.abs.(Z))
-    mx = maximum(R)
+    R = clamp.(log ? Base.log.(Base.abs.(Z)) : Base.abs.(Z),
+               cut ? mmin : -Inf, cut ? mmax : Inf)
+    mn, mx = extrema(R)
 
     shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
 
@@ -106,10 +113,10 @@ function modularsurface(
                        aspect=(aspectratio, 1, 2/3),
                        xlabel=L"\mathrm{Re}(z)",
                        ylabel=L"\mathrm{Im}(z)",
-                       zlabel=L"|f(z)|"),
+                       zlabel=log ? L"\log |f(z)|" : L"|f(z)|"),
                  kwargs...)
 
-    zlims!(fg.axis, 0, min(mx+1, mmax))
+    zlims!(fg.axis, max(mn-1, mmin), min(mx+1, mmax))
     return fg
 end
 
