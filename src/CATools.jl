@@ -36,6 +36,12 @@ to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
 
 # Keyword Arguments
 
+- **`mmax`** sets a cut off point for the magnitude.
+
+- **`cut`** toggles the behaviour when the maximum is reached. If true
+  the surface is cut, leaving a flat spot which can be shaded. Else the
+  surface is allowed to render outside of the axis limits.
+
 - **`nodes`** is the number of grid points to compute in, respectively,
   the real and imaginary axis, taking the same for both if only one
   number is provided.
@@ -72,6 +78,7 @@ function modularsurface(
         f,
         limits = (-1,1,-1,1);
         mmax = 10,
+        cut = false,
         nodes = (720, 720),
         abs = false,
         grid = false,
@@ -88,12 +95,13 @@ function modularsurface(
     i = range(limits[3], limits[4], length=nodes[2])
 
     Z = @. f(r + im*i')
-    mx = maximum(Base.abs, Z)
+    R = min.(cut ? mmax : Inf, Base.abs.(Z))
+    mx = maximum(R)
 
     shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
 
     aspectratio = (limits[2] - limits[1]) / (limits[4] - limits[3])
-    fg = surface(r, i, Base.abs.(Z); color=shader.(Z),
+    fg = surface(r, i, R; color=shader.(Z),
                  axis=(type=Axis3,
                        aspect=(aspectratio, 1, 2/3),
                        xlabel=L"\mathrm{Re}(z)",
