@@ -1,6 +1,6 @@
 name = "ComplexToys"
 uuid = "7b41c207-ea06-4250-aacd-19be2e667afc"
-authors = ["Evert Provoost <evert.provoost@kuleuven.be>"]
+authors = ["Evert Provoost <evert@eprovst.net>"]
 version = "0.1.0"
 
 [deps]
@@ -8,3 +8,10 @@ DomainColoring = "c24f3079-adb7-4533-8329-9f66732e5e85"
 DomainColoringToy = "7cf40ad8-af6a-4ede-b3c6-2a9df3bce851"
 LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+
+[compat]
+DomainColoring = "1"
+DomainColoringToy = "1"
+LaTeXStrings = "1"
+Reexport = "1"
+julia = "1.6"
