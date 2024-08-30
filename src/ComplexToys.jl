@@ -1,4 +1,4 @@
-module CATools
+module ComplexToys
 
 using Reexport, LaTeXStrings
 @reexport using DomainColoringToy

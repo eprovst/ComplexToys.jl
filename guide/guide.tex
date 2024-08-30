@@ -16,7 +16,7 @@
 	pygopt={style=xcode}]{pythontex}
 \usepackage[british]{babel}
 
-\title{\vspace*{-1em}The \texttt{CATools.jl} guide}
+\title{\vspace*{-1em}The \texttt{ComplexToys.jl} guide}
 \author{Evert Provoost}
 \date{}
 
@@ -25,7 +25,7 @@
 
 \section{Installation}
 
-\texttt{CATools.jl} (short for complex analysis tools) is a collection of
+\texttt{ComplexToys.jl} is a collection of
 plotting tools to aid the study of complex analysis. It is implemented in Julia,
 a modern and---at least in the author's opinion---a rather pleasant language to
 use.  No prior knowledge of Julia is needed to go through this document as
@@ -41,7 +41,7 @@ to enjoy the outdoors. :-)
 
 \begin{juliaverbatim}
 	using Pkg
-	pkg"add https://github.com/eprovst/CATools.jl.git"
+	pkg"add https://github.com/eprovst/ComplexToys.jl.git"
 \end{juliaverbatim}
 
 \section{A first phase plot}
@@ -50,7 +50,7 @@ To start producing plots, you first have to load the package you just installed
 with the \jlv|using| keyword.
 
 \begin{juliaverbatim}
-	using CATools
+	using ComplexToys
 \end{juliaverbatim}
 
 In the remainder of this tutorial we will discuss several plots, starting with
@@ -163,7 +163,7 @@ using \jlv|?|, for example:
 	? domaincolor
 \end{juliaverbatim}
 
-The 2D plots included in \texttt{CATools.jl} come from a different Julia package
+The 2D plots included in \texttt{ComplexToys.jl} come from a different Julia package
 called \texttt{DomainColoring.jl}; visit
 \url{https://eprovst.github.io/DomainColoring.jl} for more information and
 examples.
@@ -270,7 +270,7 @@ get a rather nice looking staircase.
 
 \section{On the Riemann sphere}
 
-Finally, \texttt{CATools.jl} is also able to plot a function on the Riemann
+Finally, \texttt{ComplexToys.jl} is also able to plot a function on the Riemann
 sphere.  Let us, to conclude, again look at the sine, with a zero at the origin
 (south pole) and an essential singularity at infinity (north pole).
 

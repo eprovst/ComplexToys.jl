@@ -1,14 +1,17 @@
-# CATools.jl
+<div align="center">
+  <img src="assets/logo.png" width=300 />
+  <h1>ComplexToys.jl</h1>
+</div>
 
 A collection of useful plotting routines for teaching and learning complex
 analysis.  Take a look at [the
-guide](https://raw.github.com/eprovst/CATools.jl/main/guide/guide.pdf)
+guide](https://raw.github.com/eprovst/ComplexToys.jl/main/guide/guide.pdf)
 to get started.
 
 To install run:
 ```julia
 using Pkg
-pkg"add https://github.com/eprovst/CATools.jl.git"
+pkg"add https://github.com/eprovst/ComplexToys.jl.git"
 ```
 
 Included plotting routines:
