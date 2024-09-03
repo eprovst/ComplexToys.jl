@@ -11,7 +11,7 @@ to get started.
 To install run:
 ```julia
 using Pkg
-pkg"add https://github.com/eprovst/ComplexToys.jl.git"
+pkg"add ComplexToys"
 ```
 
 Included plotting routines:
