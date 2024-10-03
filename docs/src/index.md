@@ -1,16 +1,19 @@
-<div align="center">
-  <img src="docs/src/assets/logo.png" width=300 />
-  <h1>ComplexToys.jl</h1>
-</div>
-<p>
-  <a href="https://eprovst.github.io/ComplexToys.jl/">
-    <img src="https://img.shields.io/badge/docs-dev-blue.svg"/></a>
-</p>
+# ComplexToys.jl: Didactical Tools for Complex Analysis
 
-A collection of useful plotting routines for teaching and learning complex
-analysis.  Take a look at [the
+Welcome to the documentation of the `ComplexToys.jl` package, a
+collection of useful plotting routines for teaching and learning complex
+analysis, based on [Makie](https://makie.org), often taking inspiration
+in the work of Wegert.[^1]
+
+```@raw html
+<div align="center">
+  <img src="assets/logo.png" width=300 />
+</div>
+```
+
+This online documentation is under construction. Take a look at [the
 guide](https://raw.github.com/eprovst/ComplexToys.jl/main/guide/guide.pdf)
-to get started.
+to get started, or use the built-in help functionality of the Julia REPL.
 
 To install run:
 ```julia
@@ -28,3 +31,8 @@ Included plotting routines:
 Next to the routines in this package, DomainColoringToy is reexported.
 See [their documentation](https://eprovst.github.io/DomainColoring.jl/stable/dct/)
 for domain colourings, checker plots, etc.
+
+[^1]:
+    Wegert, Elias. Visual Complex Functions: An Introduction with Phase
+    Portraits. Birkhäuser Basel, 2012.
+

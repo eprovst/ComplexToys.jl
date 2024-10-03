@@ -1,6 +1,6 @@
 module ComplexToys
 
-using Reexport, LaTeXStrings
+using Reexport, LaTeXStrings, GLMakie
 @reexport using DomainColoringToy
 import DomainColoring as DC
 
