@@ -123,6 +123,15 @@ specific details about the \jlv|box| keyword argument we refer to the
 documentation (try: \jlv|? domaincolor|, more on this later). Also note the use
 of \jlv|im| as imaginary unit in Julia.
 
+We conclude by mentioning that these plots are interactive. Try, for instance,
+to explore the phase of the sine function with \jlv|domaincolor(z -> sin(z))|.
+Initially it looks very similar to the identity function of before, not
+unexpected when you remember its Taylor series.  To get a better picture you can
+zoom in and out using the scroll wheel, or zoom to a region using left click and
+drag.  The centre of the plot can be dragged around using the right mouse
+button.  Finally, if you get lost, you can always reset the view using ctrl +
+left click.
+
 \section{Domain colouring and modular surfaces}
 
 Given that $z \mapsto \frac{1}{z}$ and $z \mapsto \bar{z}$ have identical phase,
@@ -279,7 +288,7 @@ sphere.  Let us, to conclude, again look at the sine, with a zero at the origin
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figures/rms-sin.png}
+	\includegraphics[width=0.62\textwidth]{figures/rms-sin.png}
 \end{figure}
 
 \end{document}
