@@ -313,4 +313,4 @@ function riemannsphere(
     return fig
 end
 
-end # module CPTools
+end # module ComplexToys
