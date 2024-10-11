@@ -11,9 +11,9 @@ in the work of Wegert.[^1]
 </div>
 ```
 
-This online documentation is under construction. Take a look at [the
-guide](https://raw.github.com/eprovst/ComplexToys.jl/main/guide/guide.pdf)
-to get started, or use the built-in help functionality of the Julia REPL.
+This online documentation is under construction. Take a look at the
+[Guide](@ref) to get started, or use the built-in help functionality of
+the Julia REPL.
 
 To install run:
 ```julia

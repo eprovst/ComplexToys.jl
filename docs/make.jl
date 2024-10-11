@@ -13,6 +13,7 @@ makedocs(
   authors = "Evert Provoost",
   pages = [
     "Home" => "index.md",
+    "Guide" => "guide.md",
     "Library" => "lib.md",
   ]
 )

@@ -3,13 +3,13 @@
   <h1>ComplexToys.jl</h1>
 </div>
 <p>
-  <a href="https://eprovst.github.io/ComplexToys.jl/">
+  <a href="https://eprovst.github.io/ComplexToys.jl/dev/">
     <img src="https://img.shields.io/badge/docs-dev-blue.svg"/></a>
 </p>
 
 A collection of useful plotting routines for teaching and learning complex
 analysis.  Take a look at [the
-guide](https://raw.github.com/eprovst/ComplexToys.jl/main/guide/guide.pdf)
+guide](https://eprovst.github.io/ComplexToys.jl/dev/guide/)
 to get started.
 
 To install run:
