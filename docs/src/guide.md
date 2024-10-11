@@ -187,8 +187,7 @@ Of course there are many variations on this idea. One could, for example, paint
 zero black and infinity white. This is for instance useful to illustrate the
 Casorati–Weierstrass theorem.
 
-```@example
-using ComplexToys, CairoMakie # hide
+```@example cairo
 domaincolor(z -> exp(1/z), .2, abs=Inf)
 resize!(current_figure(), 620, 400) #hide
 save("ess.png", current_figure()) # hide
@@ -220,19 +219,10 @@ the former to the third dimension, which results in a (painted) modular surface.
 Another essential singularity we can visualize is $z \mapsto
 \sin\left(\frac{1}{z}\right)$ near $0$.
 
-```@example gl
+```julia
 modularsurface(z -> sin(1/z))
-resize!(current_figure(), 620, 400) # hide
-save("sin-ess.png", current_figure(), px_per_unit=1) # hide
-nothing # hide
 ```
-```@raw html
-<figure>
-```
-![](sin-ess.png)
-```@raw html
-</figure>
-```
+TODO: Currently this fails within Documenter.
 
 For this example—as with all other 3D plots—it is worthwhile to plot the
 figure yourself. This additionally allows you to rotate the plot.
