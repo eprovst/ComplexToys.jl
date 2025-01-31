@@ -1,7 +1,7 @@
 using Pkg
 cd(@__DIR__)
 Pkg.activate(".")
-pkg"dev .."
+Pkg.develop(path="..")
 Pkg.instantiate()
 Pkg.precompile()
 
@@ -11,8 +11,14 @@ import DomainColoringToy
 makedocs(
   sitename = "ComplexToys.jl",
   authors = "Evert Provoost",
+  repo="https://github.com/eprovst/ComplexToys.jl/blob/{commit}{path}#{line}",
+  format=Documenter.HTML(
+    repolink="https://github.com/eprovst/ComplexToys.jl/",
+    canonical="https://eprovst.github.io/ComplexToys.jl",
+    assets=["assets/style.css",]
+  ),
   pages = [
-    "Home" => "index.md",
+    hide("Home" => "index.md"),
     "Guide" => "guide.md",
     "Library" => "lib.md",
   ]

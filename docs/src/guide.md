@@ -1,12 +1,3 @@
-```@setup gl
-using ComplexToys, GLMakie
-GLMakie.activate!()
-```
-
-```@setup cairo
-using ComplexToys, CairoMakie
-```
-
 # Guide
 
 (This document is also available in [PDF
@@ -48,34 +39,30 @@ such a plot, we display the phase, or argument, by painting $\arg z = 0$ red,
 $\arg z = \frac{\pi}{2}$ lime green, $\arg z = \pi$ cyan, $\arg z =
 \frac{3\pi}{2}$ purple, etc.
 
-```@example cairo
+```julia
 domaincolor(z -> z)
-resize!(current_figure(), 620, 400) # hide
-save("phase-id.png", current_figure()) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](phase-id.png)
+![](assets/phase-id.png)
 ```@raw html
 </figure>
 ```
 
-We note that a zero, going anticlockwise, gives red, green and finally blue. A
-pole on the other hand (below one of second order) is surrounded by red, blue
-and then green.
+Note that a zero, going anticlockwise, is surrounded by red, green and finally
+blue. A pole on the other hand (below one of second order) reverses this order,
+giving red, blue and then green. This is a useful trick to quickly spot poles
+and zeroes on a phase plot, but be aware that this is only true if no complex
+conjugation is involved!
 
-```@example cairo
+```julia
 domaincolor(z -> 1/z^2)
-resize!(current_figure(), 620, 400) # hide
-save("phase-pole.png", current_figure()) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](phase-pole.png)
+![](assets/phase-pole.png)
 ```@raw html
 </figure>
 ```
@@ -93,24 +80,15 @@ turned inside out; the second step mirrors the image along the real axis.
 This is easily seen by looking at the effect these steps have on a square, or
 algebraically by noting that only the final step modifies the phase.
 
-```@example cairo
+```julia
 domaincolor(z -> z, 2, box=(.4,.6+.2im,:white))
-resize!(current_figure(), 620, 400) # hide
-save("box-1.png", current_figure()) # hide
 domaincolor(z -> 1/conj(z), 2, box=(.4,.6+.2im,:white))
-resize!(current_figure(), 620, 400) # hide
-save("box-2.png", current_figure()) # hide
 domaincolor(z -> 1/z, 2, box=(.4,.6+.2im,:white))
-resize!(current_figure(), 620, 400) # hide
-save("box-3.png", current_figure()) # hide
-nothing # hide
 ```
 ```@raw html
 <div style="display: grid; grid-column-gap: 1.5em; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 1.5em;">
 <figure style="margin: 0;">
-```
-![](box-1.png)
-```@raw html
+  <img src="../assets/box-1.png" style="max-width:100%!important">
 <figcaption>
 ```
 $z \mapsto z$
@@ -120,9 +98,7 @@ $z \mapsto z$
 ```
 ```@raw html
 <figure style="margin: 0;">
-```
-![](box-2.png)
-```@raw html
+  <img src="../assets/box-2.png" style="max-width:100%!important">
 <figcaption>
 ```
 $z \mapsto \frac{1}{\bar{z}}$
@@ -132,9 +108,7 @@ $z \mapsto \frac{1}{\bar{z}}$
 ```
 ```@raw html
 <figure style="margin: 0;">
-```
-![](box-3.png)
-```@raw html
+  <img src="../assets/box-3.png" style="max-width:100%!important">
 <figcaption>
 ```
 $z \mapsto \frac{1}{z}$
@@ -169,16 +143,13 @@ colouring (hence `domaincolor`). We can add the contours using the option
 lightness between contours) and zero (right, with *decreasing* lightness between
 contours) in the below example.
 
-```@example cairo
+```julia
 domaincolor(z -> (conj(z) - .5)/(z + .5), abs=true)
-resize!(current_figure(), 620, 400) # hide
-save("candp.png", current_figure()) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](candp.png)
+![](assets/candp.png)
 ```@raw html
 </figure>
 ```
@@ -187,16 +158,13 @@ Of course there are many variations on this idea. One could, for example, paint
 zero black and infinity white. This is for instance useful to illustrate the
 Casorati–Weierstrass theorem.
 
-```@example cairo
+```julia
 domaincolor(z -> exp(1/z), .2, abs=Inf)
-resize!(current_figure(), 620, 400) #hide
-save("ess.png", current_figure()) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](ess.png)
+![](assets/ess.png)
 ```@raw html
 </figure>
 ```
@@ -211,8 +179,9 @@ using `?`, for example:
 ```
 
 The 2D plots included in `ComplexToys.jl` come from a different Julia package
-called `DomainColoring.jl`; visit <https://eprovst.github.io/DomainColoring.jl>
-for more information and examples.
+called `DomainColoring.jl`; visit [their
+documentation](https://eprovst.github.io/DomainColoring.jl) for more
+information and examples.
 
 Yet another way to represent magnitude and phase at the same time, is by moving
 the former to the third dimension, which results in a (painted) modular surface.
@@ -222,7 +191,13 @@ Another essential singularity we can visualize is $z \mapsto
 ```julia
 modularsurface(z -> sin(1/z))
 ```
-TODO: Currently this fails within Documenter.
+```@raw html
+<figure>
+```
+![](assets/sin-ess.png)
+```@raw html
+</figure>
+```
 
 For this example—as with all other 3D plots—it is worthwhile to plot the
 figure yourself. This additionally allows you to rotate the plot.
@@ -232,16 +207,13 @@ figure yourself. This additionally allows you to rotate the plot.
 When looking at the domain colouring of $z \mapsto z^2$ we see the same values
 appear twice in the complex plane.
 
-```@example cairo
+```
 domaincolor(z -> z^2, abs=true)
-resize!(current_figure(), 620, 400) # hide
-save("dc-pow2.png", current_figure()) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](dc-pow2.png)
+![](assets/dc-pow2.png)
 ```@raw html
 </figure>
 ```
@@ -269,16 +241,13 @@ argument. Analogously, the principal value of the logarithm is given by
 $\mathrm{Log}\,z = \log |z| + i\,\mathrm{Arg}\, z$, which is of course
 compatible with the preceding.
 
-```@example cairo
+```julia
 domaincolor(z -> z^(1/2), abs=true)
-resize!(current_figure(), 620, 400) # hide
-save("dc-sqrt.png", current_figure()) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](dc-sqrt.png)
+![](assets/bc-sqrt.png)
 ```@raw html
 </figure>
 ```
@@ -292,16 +261,13 @@ When we project this orthogonally on the first three components and colour the
 resulting surface according to the removed component, we get the following for
 $z \mapsto z^{\frac{1}{2}}$.
 
-```@example gl
+```julia
 riemannpow(1//2)
-resize!(current_figure(), 620, 400) # hide
-save("rm-sqrt.png", current_figure(), px_per_unit=1) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](rm-sqrt.png)
+![](assets/rm-sqrt.png)
 ```@raw html
 </figure>
 ```
@@ -320,16 +286,13 @@ A 'simpler' example of a function that takes infinitely many values is $\log z =
 \log |z| + i\arg z$.  Using a slightly different projection, we get a rather
 nice looking staircase.
 
-```@example gl
+```julia
 riemannlog()
-resize!(current_figure(), 620, 400) # hide
-save("rm-log.png", current_figure(), px_per_unit=1) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](rm-log.png)
+![](assets/rm-log.png)
 ```@raw html
 </figure>
 ```
@@ -340,17 +303,13 @@ Finally, `ComplexToys.jl` is also able to plot a function on the Riemann sphere.
 Let us, to conclude, again look at the sine, with a zero at the origin (south
 pole) and an essential singularity at infinity (north pole).
 
-```@example gl
+```julia
 riemannsphere(sin)
-rotate!(current_figure().scene, Vec3f(-1, 1, 0), 0.25) # hide
-resize!(current_figure(), 400, 400) # hide
-save("rms-sin.png", current_figure(), px_per_unit=1) # hide
-nothing # hide
 ```
 ```@raw html
 <figure>
 ```
-![](rms-sin.png)
+![](assets/rms-sin.png)
 ```@raw html
 </figure>
 ```

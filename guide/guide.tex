@@ -66,9 +66,11 @@ $\arg z = \frac{3\pi}{2}$ purple, etc.
 	\includegraphics[width=.45\textwidth]{figures/phase-id.png}
 \end{figure}
 
-We note that a zero, going anticlockwise, gives red, green and finally blue. A
-pole on the other hand (below one of second order) is surrounded by red, blue
-and then green.
+Note that a zero, going anticlockwise, is surrounded by red, green and finally
+blue. A pole on the other hand (below one of second order) reverses this order,
+giving red, blue and then green. This is a useful trick to quickly spot poles
+and zeroes on a phase plot, but be aware that this is only true if no complex
+conjugation is involved!
 
 \begin{juliaverbatim}
 	domaincolor(z -> 1/z^2)
