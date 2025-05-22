@@ -4,3 +4,6 @@ ComplexToys = "7b41c207-ea06-4250-aacd-19be2e667afc"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 DomainColoringToy = "7cf40ad8-af6a-4ede-b3c6-2a9df3bce851"
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+
+[sources]
+ComplexToys = {path = ".."}
