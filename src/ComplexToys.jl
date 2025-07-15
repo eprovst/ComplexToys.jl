@@ -10,7 +10,10 @@ export modularsurface
     modularsurface(
         f :: "Complex -> Complex",
         limits = (-1,1,-1,1);
+        log = false,
         mmax = 10,
+        mmin = log ? -mmax : 0,
+        cut = false,
         nodes = (720, 720),
         abs = false,
         grid = false,
@@ -55,9 +58,9 @@ to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
   this will be used as base of the logarithm instead, if set to `Inf`,
   zero magnitude will be colored black and poles white. Further granular
   control can be achieved by passing a named tuple with any of the
-  parameters `base`, `transform`, or `sigma`. `base` changes the base of
+  parameters `base`, `transform`, or `alpha`. `base` changes the base of
   the logarithm, as before. `transform` is the function applied to the
-  magnitude (`m -> log(base, m)` by default), and `sigma` changes the
+  magnitude (`m -> log(base, m)` by default), and `alpha` changes the
   rate at which zeros and poles are colored and implies `base = Inf`.
 
 - **`grid`** plots points with integer real or imaginary part as black
@@ -114,6 +117,7 @@ function modularsurface(
                        xlabel=L"\mathrm{Re}(z)",
                        ylabel=L"\mathrm{Im}(z)",
                        zlabel=log ? L"\log |f(z)|" : L"|f(z)|"),
+                 clip_planes=[],
                  kwargs...)
 
     zlims!(fg.axis, max(mn-1, mmin), min(mx+1, mmax))
@@ -219,10 +223,12 @@ function riemannlog(;
     W = @. log(r) + im*θ'
 
     fg = surface(real.(Z), imag.(Z), imag.(W); color=real.(W),
+            colorrange=(-4, 0),
             axis=(type=Axis3,
                   xlabel=L"\mathrm{Re}(z)",
                   ylabel=L"\mathrm{Im}(z)",
                   zlabel=L"\mathrm{Im}(\log(z))"),
+            clip_planes=[],
             kwargs...)
     zlims!(fg.axis, -2π, 2π)
 
@@ -264,9 +270,9 @@ to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
   this will be used as base of the logarithm instead, if set to `Inf`,
   zero magnitude will be colored black and poles white. Further granular
   control can be achieved by passing a named tuple with any of the
-  parameters `base`, `transform`, or `sigma`. `base` changes the base of
+  parameters `base`, `transform`, or `alpha`. `base` changes the base of
   the logarithm, as before. `transform` is the function applied to the
-  magnitude (`m -> log(base, m)` by default), and `sigma` changes the
+  magnitude (`m -> log(base, m)` by default), and `alpha` changes the
   rate at which zeros and poles are colored and implies `base = Inf`.
 
 - **`grid`** plots points with integer real or imaginary part as black
