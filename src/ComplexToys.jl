@@ -1,6 +1,6 @@
 module ComplexToys
 
-using Reexport, LaTeXStrings, GLMakie
+using Reexport, Observables, LaTeXStrings, GLMakie
 @reexport using DomainColoringToy
 import DomainColoring as DC
 
@@ -98,20 +98,22 @@ function modularsurface(
     )
 
     length(nodes) == 1 && (nodes = (nodes, nodes))
-    limits = DC._expandlimits(limits)
+    limits = Observable(DC._expandlimits(limits))
 
-    r = range(limits[1], limits[2], length=nodes[1])
-    i = range(limits[3], limits[4], length=nodes[2])
+    r = Observables.@map range((&limits)[1], (&limits)[2], length=nodes[1])
+    i = Observables.@map range((&limits)[3], (&limits)[4], length=nodes[2])
 
-    Z = @. f(r + im*i')
-    R = clamp.(log ? Base.log.(Base.abs.(Z)) : Base.abs.(Z),
-               cut ? mmin : -Inf, cut ? mmax : Inf)
-    mn, mx = extrema(R)
+    Z = Observables.@map @. f(&r + im*(&i)')
+    lmt(Z) = clamp.(log ? Base.log.(Base.abs.(Z)) : Base.abs.(Z),
+                    cut ? mmin : -Inf, cut ? mmax : Inf)
+    R = Observables.@map lmt(&Z)
+    mn, mx = extrema(R[])
 
     shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
+    C = Observables.@map shader.(&Z)
 
-    aspectratio = (limits[2] - limits[1]) / (limits[4] - limits[3])
-    fg = surface(r, i, R; color=shader.(Z),
+    aspectratio = (limits[][2] - limits[][1]) / (limits[][4] - limits[][3])
+    fg = surface(r, i, R; color=C,
                  axis=(type=Axis3,
                        aspect=(aspectratio, 1, 2/3),
                        xlabel=L"\mathrm{Re}(z)",
@@ -120,7 +122,15 @@ function modularsurface(
                  clip_planes=[],
                  kwargs...)
 
+    xlims!(fg.axis, limits[][1], limits[][2])
+    ylims!(fg.axis, limits[][3], limits[][4])
     zlims!(fg.axis, max(mn-1, mmin), min(mx+1, mmax))
+
+    on(fg.axis.finallimits) do lims
+        limits[] = (lims.origin[1], lims.origin[1] + lims.widths[1],
+                    lims.origin[2], lims.origin[2] + lims.widths[2])
+    end
+
     return fg
 end
 
