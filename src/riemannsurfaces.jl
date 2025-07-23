@@ -65,6 +65,7 @@ function riemannpow(
                   xlabel=L"\mathrm{Re}(z)",
                   ylabel=L"\mathrm{Im}(z)",
                   zlabel=latexstring("\\mathrm{Re}\\left(z^{$(k)}\\right)")),
+            clip_planes=[],
             kwargs...)
 end
 
