@@ -178,8 +178,8 @@ using `?`, for example:
 ? domaincolor
 ```
 
-The 2D plots included in `ComplexToys.jl` come from a different Julia package
-called `DomainColoring.jl`; visit [their
+The 2D plots included in `ComplexToys.jl` are interactive version of those
+found in a different Julia package called `DomainColoring.jl`; visit [their
 documentation](https://eprovst.github.io/DomainColoring.jl) for more
 information and examples.
 

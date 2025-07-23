@@ -39,8 +39,7 @@ machine, this might take a while. Grab a cup of tea or coffee and take a minute
 to enjoy the outdoors. :-)
 
 \begin{juliaverbatim}
-	using Pkg
-	pkg"add ComplexToys"
+	using Pkg; pkg"add ComplexToys"
 \end{juliaverbatim}
 
 \section{A first phase plot}
@@ -63,7 +62,7 @@ $\arg z = \frac{3\pi}{2}$ purple, etc.
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/phase-id.png}
+	\includegraphics[width=.42\textwidth]{figures/phase-id.png}
 \end{figure}
 
 Note that a zero, going anticlockwise, is surrounded by red, green and finally
@@ -77,7 +76,7 @@ conjugation is involved!
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/phase-pole.png}
+	\includegraphics[width=.42\textwidth]{figures/phase-pole.png}
 \end{figure}
 
 Note the first bit of Julia syntax you will need: an anonymous function (a
@@ -149,7 +148,7 @@ colouring (hence \jlv|domaincolor|). We can add the contours using the option
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/candp.png}
+	\includegraphics[width=.42\textwidth]{figures/candp.png}
 \end{figure}
 
 Of course there are many variations on this idea. One could, for example, paint
@@ -161,7 +160,7 @@ Casorati--Weierstrass theorem.
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/ess.png}
+	\includegraphics[width=.42\textwidth]{figures/ess.png}
 \end{figure}
 
 Aside from what is illustrate here, many other options are available, for
@@ -173,8 +172,8 @@ using \jlv|?|, for example:
 	? domaincolor
 \end{juliaverbatim}
 
-The 2D plots included in \texttt{ComplexToys.jl} come from a different Julia package
-called \texttt{DomainColoring.jl}; visit
+The 2D plots included in \texttt{ComplexToys.jl} are interactive version of those
+found in a different Julia package called \texttt{DomainColoring.jl}; visit
 \url{https://eprovst.github.io/DomainColoring.jl} for more information and
 examples.
 
@@ -188,7 +187,7 @@ $z \mapsto \sin\left(\frac{1}{z}\right)$ near $0$.
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/sin-ess.png}
+	\includegraphics[width=.42\textwidth]{figures/sin-ess.png}
 \end{figure}
 
 For this example---as with all other 3D plots---it is worthwhile to plot the
@@ -204,7 +203,7 @@ appear twice in the complex plane.
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/dc-pow2.png}
+	\includegraphics[width=.42\textwidth]{figures/dc-pow2.png}
 \end{figure}
 
 The inverse map $z \mapsto z^{\frac{1}{2}}$ will hence take two values in any
@@ -235,7 +234,7 @@ is of course compatible with the preceding.
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/bc-sqrt.png}
+	\includegraphics[width=.42\textwidth]{figures/bc-sqrt.png}
 \end{figure}
 
 Additionally, we could also try to make a plot of all the values at the same
@@ -252,7 +251,7 @@ following for $z \mapsto z^{\frac{1}{2}}$.
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/rm-sqrt.png}
+	\includegraphics[width=.42\textwidth]{figures/rm-sqrt.png}
 \end{figure}
 
 Here \jlv|1//2| is Julia notation for the exact rational number
@@ -275,7 +274,7 @@ get a rather nice looking staircase.
 \end{juliaverbatim}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.45\textwidth]{figures/rm-log.png}
+	\includegraphics[width=.42\textwidth]{figures/rm-log.png}
 \end{figure}
 
 \section{On the Riemann sphere}

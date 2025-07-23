@@ -1,15 +1,17 @@
 # Library
 
-## ComplexToys
+Note: ComplexToys reexports the exports of GLMakie.
+
+## Public Interface
 
 ```@autodocs
 Modules = [ComplexToys]
 Private = false
 ```
 
-## Reexported from DomainColoringToy
+## Package Internals
 
 ```@autodocs
-Modules = [DomainColoringToy]
-Private = false
+Modules = [ComplexToys]
+Public = false
 ```

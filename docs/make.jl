@@ -5,7 +5,6 @@ Pkg.instantiate()
 Pkg.precompile()
 
 using Documenter, ComplexToys
-import DomainColoringToy
 
 makedocs(
   sitename = "ComplexToys.jl",
