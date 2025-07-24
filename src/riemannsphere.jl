@@ -28,7 +28,7 @@ to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
 # Keyword Arguments
 
 - **`nodes`** is the number of grid points to compute in, respectively,
-  the azimuth and polar angles, per quarter section of the sphere.
+  the polar and azimuth angles, per quarter section of the sphere.
   Taking the same for both if only one number is provided.
 
 - **`abs`** toggles the plotting of the natural logarithm of the
@@ -70,11 +70,11 @@ function riemannsphere(
         kwargs...
     )
 
-    ϕ = range(1/2, -1/2, length=2nodes[1])
-    θ = range(-1, 1, length=4nodes[2])
-    x = @. cospi(ϕ)*cospi(θ')
-    y = @. cospi(ϕ)*sinpi(θ')
-    z = @. sinpi(ϕ) + 0θ'
+    θ = LinRange(0, 1, 2nodes[1])
+    ϕ = LinRange(0, 2, 4nodes[2])
+    x = @. sinpi(θ)*cospi(ϕ')
+    y = @. sinpi(θ)*sinpi(ϕ')
+    z = repeat(cospi.(θ), 1, length(ϕ))
     ξ = @. (x - im*y) / (1 - z)
 
     shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
