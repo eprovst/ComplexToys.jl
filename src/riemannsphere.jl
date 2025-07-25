@@ -1,12 +1,14 @@
 using GLMakie
 import DomainColoring as DC
+import GeometryBasics as GB
 
 export riemannsphere
 
 """
     riemannsphere(
-        f :: "Complex -> Complex";
-        nodes = (720, 720),
+        f :: "Complex -> Complex",
+        center = 1.7071 - 1.7071im;
+        nodes = 720,
         abs = false,
         grid = false,
         color = true,
@@ -15,7 +17,7 @@ export riemannsphere
         kwargs...
     )
 
-Takes a complex function and produces its Riemann sphere surface plot.
+Takes a complex function and produces a mesh plot of its Riemann sphere.
 
 Red corresponds to phase ``0``, yellow to ``\\frac{\\pi}{3}``, green
 to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
@@ -25,11 +27,12 @@ to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
 
 - **`f`** is the complex function to plot.
 
+- **`center`** is the complex number the sphere should initially
+  be centered at, defaults to ``1.7071 - 1.7071i``.
+
 # Keyword Arguments
 
-- **`nodes`** is the number of grid points to compute in, respectively,
-  the polar and azimuth angles, per quarter section of the sphere.
-  Taking the same for both if only one number is provided.
+- **`nodes`** is the tessellation level of the sphere.
 
 - **`abs`** toggles the plotting of the natural logarithm of the
   magnitude as lightness ramps between level curves. If set to a number,
@@ -60,8 +63,9 @@ to ``\\frac{2\\pi}{3}``, cyan to ``\\pi``, blue to
 Remaining keyword arguments are passed to the plotting backend.
 """
 function riemannsphere(
-        f;
-        nodes = (720, 720),
+        f,
+        center = 1.7071 - 1.7071im;
+        nodes = 720,
         abs = false,
         grid = false,
         color = true,
@@ -70,18 +74,22 @@ function riemannsphere(
         kwargs...
     )
 
-    θ = LinRange(0, 1, 2nodes[1])
-    ϕ = LinRange(0, 2, 4nodes[2])
-    x = @. sinpi(θ)*cospi(ϕ')
-    y = @. sinpi(θ)*sinpi(ϕ')
-    z = repeat(cospi.(θ), 1, length(ϕ))
-    ξ = @. (x - im*y) / (1 - z)
-
-    shader(w) = DC.domaincolorshader(w; abs, grid, color, all, box)
+    sph = GB.mesh(GB.Tesselation(Sphere(Point3f(0), 1f0), nodes))
+    proj(p) = (p[1] - im*p[2]) / (1 - p[3])
+    shader(p) = DC.domaincolorshader(f(proj(p)); abs, grid, color, all, box)
 
     fig = Figure()
-    scn = LScene(fig[1,1]; show_axis=false)
-    surface!(scn, x, y, z; color=shader.(f.(ξ)), kwargs...)
+    ax = LScene(fig[1,1]; show_axis=false)
+
+    θ = 2atan(Base.abs(center))
+    # if θ == 0, rendering glitches, for some reason, so nudge it a bit
+    θ = θ == 0 ? eps() : θ
+    ϕ = -angle(center)
+    eyeposition = 2Vec3d(sin(θ)*cos(ϕ), sin(θ)*sin(ϕ), -cos(θ))
+    Camera3D(ax.scene; eyeposition, zoom_shift_lookat = false, cad = true)
+
+    mesh!(ax, sph; color=shader.(GB.coordinates(sph)), kwargs...)
+
     return fig
 end
 
